@@ -281,10 +281,26 @@
         // 메모를 생성합니다.
         function writePost() {
             // 1. 작성한 메모를 불러옵니다.
+            let contents = $('#contents').val();
             // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
+            if (isValidContents(contents) == false) {
+                return;
+            }
             // 3. genRandomName 함수를 통해 익명의 username을 만듭니다.
+            let username = genRandomName(10);
             // 4. 전달할 data JSON으로 만듭니다.
+            let data = {'username': username, 'contents': contents};
             // 5. POST /api/memos 에 data를 전달합니다.
+            $.ajax({
+                type: "POST",
+                url: "/api/memos",
+                contentType: "application/json", // JSON 형식으로 전달함을 알리기
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert('메시지가 성공적으로 작성되었습니다.');
+                    window.location.reload();
+                }
+            });
         }
 
         // 메모를 수정합니다.
